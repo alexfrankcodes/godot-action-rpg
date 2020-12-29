@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Player/Player.png" type="Texture" id=1]
 [ext_resource path="res://Player/Player.gd" type="Script" id=2]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 4.0
+height = 4.0
 
 [node name="World" type="Node2D"]
 
@@ -15,3 +19,13 @@ __meta__ = {
 [node name="Sprite" type="Sprite" parent="Player"]
 texture = ExtResource( 1 )
 hframes = 60
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2( 0.329201, 8.7276 )
+rotation = -1.5708
+shape = SubResource( 1 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 0, 0, 16, 16, 24, 48, 32, 72, 64, 104, 112, 88, 152, 96, 168, 72, 192, 40, 200, 16, 176, 0, 248, 32, 192, 112, 16, 112, 8, 32 )
