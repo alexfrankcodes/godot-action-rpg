@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=2]
+[gd_scene load_steps=63 format=2]
 
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://World/Bush.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://UI/HealthUI.tscn" type="PackedScene" id=9]
 [ext_resource path="res://World/Tree.tscn" type="PackedScene" id=10]
 [ext_resource path="res://World.gd" type="Script" id=11]
+[ext_resource path="res://Camera2D.tscn" type="PackedScene" id=12]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
@@ -501,10 +502,14 @@ __meta__ = {
 "_edit_horizontal_guides_": [ -32.0 ]
 }
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" parent="." instance=ExtResource( 12 )]
 position = Vector2( 144, 48 )
-current = true
-smoothing_enabled = true
+
+[node name="TopLeft" parent="Camera2D/Limits" index="0"]
+position = Vector2( -84, -83 )
+
+[node name="BottomRight" parent="Camera2D/Limits" index="1"]
+position = Vector2( 435, 242 )
 
 [node name="Background" type="Sprite" parent="."]
 position = Vector2( 160, 90 )
@@ -612,3 +617,5 @@ margin_top = 3.0
 margin_right = 68.0
 margin_bottom = 15.0
 script = ExtResource( 8 )
+
+[editable path="Camera2D"]
