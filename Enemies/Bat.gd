@@ -5,6 +5,7 @@ export var ACCELERATION = 300
 export var MAX_SPEED = 50
 export var FRICTION = 200
 export var WANDER_TARGET_RANGE = 4
+export var INVINCIBILITY_LENGTH = 0.4
 
 const KNOCKBACK_FRICTION = 200
 const KNOCKBACK_STRENGTH = 120
@@ -27,6 +28,7 @@ onready var playerDetectionZone = $PlayerDetectionZone
 onready var hurtbox = $Hurtbox
 onready var softCollision = $SoftCollision
 onready var wanderController = $WanderController
+onready var blinkAnimationPlayer = $BlinkAnimationPlayer
 
 func _ready():
 	state = pick_random_state([IDLE, WANDER])
@@ -82,9 +84,19 @@ func _on_Hurtbox_area_entered(area):
 	stats.health -= area.damage
 	knockback = area.knockback_vector * KNOCKBACK_STRENGTH
 	hurtbox.create_hit_effect()
+	hurtbox.start_invincibility(INVINCIBILITY_LENGTH)
 
 func _on_Stats_no_health():
 	queue_free()
 	var enemyDeathEffect = EnemyDeathEffect.instance()
 	get_parent().add_child(enemyDeathEffect)
 	enemyDeathEffect.global_position = global_position
+
+func _on_Hurtbox_invincibility_started():
+	blinkAnimationPlayer.play("Start")
+
+func _on_Hurtbox_invincibility_ended():
+	blinkAnimationPlayer.play("Stop")
+
+
+

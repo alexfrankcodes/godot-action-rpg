@@ -6,6 +6,7 @@ export var ACCELERATION = 500
 export var MAX_SPEED = 80
 export var ROLL_SPEED = 125
 export var FRICTION = 500
+export var INVINCIBILITY_LENGTH = 0.6
 
 enum {
 	MOVE,
@@ -23,6 +24,7 @@ onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 onready var swordHitbox = $HitboxPivot/SwordHitbox
 onready var hurtbox = $Hurtbox
+onready var blinkAnimationPlayer = $BlinkAnimationPlayer
 
 func _ready():
 	stats.connect("no_health", self, "queue_free")
@@ -86,10 +88,15 @@ func attack_animation_finished():
 	state = MOVE
 
 
-func _on_Hurtbox_area_entered(_area):
-	stats.health -= 1
-	hurtbox.start_invincibility(0.5)
+func _on_Hurtbox_area_entered(area):
+	stats.health -= area.damage
+	hurtbox.start_invincibility(INVINCIBILITY_LENGTH)
 	hurtbox.create_hit_effect()
 	var playerHurtSound = PlayerHurtSound.instance()
 	get_tree().current_scene.add_child(playerHurtSound)
-	
+
+func _on_Hurtbox_invincibility_started():
+	blinkAnimationPlayer.play("Start")
+
+func _on_Hurtbox_invincibility_ended():
+	blinkAnimationPlayer.play("Stop")
